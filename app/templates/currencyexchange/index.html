@@ -2,15 +2,57 @@
 
 {% block content %}
 
+<div class="conteiner">
 
-<form action="" method="POST">
-    {% csrf_token %}
-    <input type="text" name="amount">
-    <select name="from_curr" id=""></select>
-    <select name="to_curr" id=""></select>
-    <button type="submit">Расчитать</button>
+    <form action="" method="POST" id="form" class="p-3">
+
+        {% csrf_token %}
+        <div class="form-row">
+
+            <div class="form-group col-md-4 mb-0">
+                <label for="amount">Сумма</label>
+                <input type="number" name="from_amount" id="amount" class="form-control" placeholder="Введите число">
+            </div>
+
+
+            <div class="form-group col-md-4 mb-0">
+                <select name="from_curr" class="form-control" id="from_curr">
+                    {% for curr in currencies %}
+                    <option value="{{ curr }}">{{ curr }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group col-md-4 mb-0">
+                <select name="to_curr" class="form-control" id="to_curr">
+                    {% for curr in currencies %}
+                    <option value="{{ curr }}">{{ curr }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        {% if converted_amount %}
+        <div class="card col-6 p-0 m-auto">
+            <div class="card-header text-center">
+                <h5>Отдаём <b>{{ from_curr }}</b> Получаем
+                    <b>{{ to_curr }}</b>
+                </h5>
+            </div>
+            <div class="card-body">
+                {{ converted_amount }}
+            </div>
+        </div>
+        {% endif %}
+
+
+        <div class="submit-btn mt-3">
+            <button type="submit" class="btn btn-primary">Расчитать</button>
+        </div>
+
+</div>
 </form>
 
 
+</div>
 {% endblock %}
-
