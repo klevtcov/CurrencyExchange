@@ -2,57 +2,120 @@
 
 {% block content %}
 
-<div class="conteiner">
-
-    <form action="" method="POST" id="form" class="p-3">
-
-        {% csrf_token %}
-        <div class="form-row">
-
-            <div class="form-group col-md-4 mb-0">
-                <label for="amount">Сумма</label>
-                <input type="number" name="from_amount" id="amount" class="form-control" placeholder="Введите число">
-            </div>
 
 
-            <div class="form-group col-md-4 mb-0">
-                <select name="from_curr" class="form-control" id="from_curr">
-                    {% for curr in currencies %}
-                    <option value="{{ curr }}">{{ curr }}</option>
-                    {% endfor %}
-                </select>
-            </div>
 
-            <div class="form-group col-md-4 mb-0">
-                <select name="to_curr" class="form-control" id="to_curr">
-                    {% for curr in currencies %}
-                    <option value="{{ curr }}">{{ curr }}</option>
-                    {% endfor %}
-                </select>
+<form action="" method="post" id="form">
+    {% csrf_token %}
+
+
+    {% for field in form %}
+    <div class="form-group">
+        {{ field.label_tag }}
+        {{ field }}
+        <div class="invalid-feedback">
+            {{ field.errors }}
+        </div>
+    </div>
+    {% endfor %}
+
+
+    {% comment %}
+    <!-- ручной рендер формы -->
+
+    <div>
+        {{ form.non_field.errors }}
+        <div class="form-group">
+            <label for="{{ form.amount }}" class="form-label">Количество</label>
+
+            {{ form.amount }}
+            <div class="invalid-feedback">
+                {{ form.amount.errors }}
             </div>
         </div>
 
-        {% if converted_amount %}
-        <div class="card col-6 p-0 m-auto">
-            <div class="card-header text-center">
-                <h5>Отдаём <b>{{ from_curr }}</b> Получаем
-                    <b>{{ to_curr }}</b>
-                </h5>
-            </div>
-            <div class="card-body">
-                {{ converted_amount }}
-            </div>
-        </div>
-        {% endif %}
-
-
-        <div class="submit-btn mt-3">
-            <button type="submit" class="btn btn-primary">Расчитать</button>
+        <div class="form-group col-md-4 mb-0">
+            <select name="from_curr" class="form-control" id="from_curr" label>
+                {% for curr in currencies %}
+                <option value="{{ curr }}">{{ curr }}</option>
+                {% endfor %}
+            </select>
         </div>
 
-</div>
+        <div class="form-group col-md-4 mb-0">
+            <select name="to_curr" class="form-control" id="to_curr" label>
+                {% for curr in currencies %}
+                <option value="{{ curr }}">{{ curr }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </div>
+
+    <div class="submit-btn mt-3">
+        <button type="submit" class="btn btn-primary">Расчитать</button>
+    </div>
+
+    {% endcomment %}
+
+
+    {% comment %}
+
+    <div class="conteiner">
+
+
+
+        <form action="" method="POST" id="form" class="p-3">
+
+            {% csrf_token %}
+            <div class="form-row">
+
+                <div class="form-group col-md-4 mb-0">
+                    <label for="amount">Сумма</label>
+                    <input type="number" name="from_amount" id="amount" class="form-control"
+                        placeholder="Введите число">
+                </div>
+
+
+                <div class="form-group col-md-4 mb-0">
+                    <select name="from_curr" class="form-control" id="from_curr">
+                        {% for curr in currencies %}
+                        <option value="{{ curr }}">{{ curr }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4 mb-0">
+                    <select name="to_curr" class="form-control" id="to_curr">
+                        {% for curr in currencies %}
+                        <option value="{{ curr }}">{{ curr }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            {% if converted_amount %}
+            <div class="card col-6 p-0 m-auto">
+                <div class="card-header text-center">
+                    <h5>Отдаём <b>{{ from_curr }}</b> Получаем
+                        <b>{{ to_curr }}</b>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{ converted_amount }}
+                </div>
+            </div>
+            {% endif %}
+
+
+            <div class="submit-btn mt-3">
+                <button type="submit" class="btn btn-primary">Расчитать</button>
+            </div>
+
+    </div>
 </form>
 
+{% endcomment %}
 
 </div>
 {% endblock %}
